@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4.0.1
         with:
           node-version: '18'  # Using Node.js version 18
-          cache: 'pnpm'  # Caching dependencies for faster builds
+          # cache: 'pnpm'  # Caching dependencies for faster builds
 
       - name: Install pnpm
         run: npm install -g pnpm
