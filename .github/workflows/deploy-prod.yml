@@ -1,4 +1,4 @@
-name: Deploy Prod
+name: Deploy Prod to AWS Elastic Beanstalk
 
 on:
   push:
@@ -13,14 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [18]
-
+  deploy:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
@@ -28,8 +22,12 @@ jobs:
       - name: Setup node env
         uses: actions/setup-node@v4.0.1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18'  # Using Node.js version 18
+          cache: 'pnpm'  # Caching dependencies for faster builds
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+      
       - name: use pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -56,6 +54,12 @@ jobs:
 
       - name: Building application
         run: pnpm run build
+        env:
+          NODE_ENV: "production"
+          SERP_API_KEY: ${{secrets.SERP_API_KEY}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          APP_JWT_SECRET: ${{secrets.APP_JWT_SECRET}}
+          AWS_BUCKET_NAME: ${{secrets.AWS_BUCKET_NAME}}
 
       - name: Generate deployment package
         run: zip -r deploy.zip * .[^.]* -x "**node_modules**"
@@ -86,10 +90,3 @@ jobs:
 
       - name: Deployed!
         run: echo App deployed to ELB
-
-        env:
-          NODE_ENV: "production"
-          SERP_API_KEY: ${{secrets.SERP_API_KEY}}
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
-          APP_JWT_SECRET: ${{secrets.APP_JWT_SECRET}}
-          AWS_BUCKET_NAME: ${{secrets.AWS_BUCKET_NAME}}
