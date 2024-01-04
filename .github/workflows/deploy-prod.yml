@@ -31,7 +31,7 @@ jobs:
       - name: use pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10
           
       - name: get pnpm store directory
         shell: bash
