@@ -2,8 +2,6 @@ import { FastifyReply } from 'fastify'
 import { IUserRequest } from '../interfaces'
 // import { prisma } from '../helpers/utils'
 import { ERRORS, handleServerError } from '../helpers/errors'
-import * as JWT from 'jsonwebtoken'
-import { utils } from '../helpers/utils'
 import { ERROR500, ERROR400, STANDARD } from '../helpers/constants'
 
 // export const login = async (request: IUserRequest, reply: FastifyReply) => {
