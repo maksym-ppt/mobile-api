@@ -1,4 +1,3 @@
-// import { utils } from './helpers/utils';
 import userRouter from './routes/user.router'
 import imageRouter from './routes/image.router'
 
@@ -30,7 +29,6 @@ async function run() {
   await fastify.register(prismaPlugin);
   await fastify.register(userRouter, { prefix: '/api/v1/user' });
   await fastify.register(imageRouter, { prefix: '/api/v1/image' });
-  // await fastify.register(postRouter, { prefix: '/api/v1/post' });
 
   fastify.setErrorHandler((error, request, reply) => {
     fastify.log.error(error);
@@ -40,14 +38,6 @@ async function run() {
     reply.send({ name: 'mobile-api' })
   })
 
-  // fastify.get('/health-check', async (request, reply) => {
-  //   try {
-  //     await utils.healthCheck()
-  //     reply.status(200).send()
-  //   } catch (e) {
-  //     reply.status(500).send()
-  //   }
-  // })
 
   if (process.env.NODE_ENV === 'production') {
     for (const signal of ['SIGINT', 'SIGTERM']) {
