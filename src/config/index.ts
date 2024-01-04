@@ -25,8 +25,6 @@ export default function loadConfig(): void {
     data: result.parsed,
     schema: S.object()
       .prop('NODE_ENV', S.string().enum(['development', 'testing', 'production']).required())
-      .prop('API_HOST', S.string().required())
-      .prop('API_PORT', S.string().required())
       .prop('DATABASE_URL', S.string().required())
       .prop('APP_JWT_SECRET', S.string().required())
       .valueOf()
